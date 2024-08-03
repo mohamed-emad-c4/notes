@@ -107,8 +107,5 @@ class NotesDatabase {
     _database = null; // نضمن عدم استخدام قاعدة بيانات مغلقة
   }
 
-  Future<void> vacuumDatabase() async {
-    final db = await instance.database;
-    await db.execute('VACUUM');
-  }
+
 }

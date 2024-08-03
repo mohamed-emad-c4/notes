@@ -48,7 +48,6 @@ class Home extends StatelessWidget {
             tooltip: 'Delete all notes',
             onPressed: () async {
               await NotesDatabase.instance.deleteAllNotes();
-              await NotesDatabase.instance.vacuumDatabase();
               Get.forceAppUpdate();
               Get.snackbar('Success',
                   'Delete all notes ${themeController.isDark.value ? '🌚' : "🌞"} ');
