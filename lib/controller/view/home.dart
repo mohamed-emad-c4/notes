@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:notes/DB/database.dart';
 import 'package:notes/controller/them_controller.dart';
+import 'package:notes/controller/view/search.dart';
 import 'package:notes/custom_widget/wigets.dart';
 import 'package:notes/models/note_model.dart';
 import 'package:sqflite/sqflite.dart';
@@ -46,7 +47,7 @@ class Home extends StatelessWidget {
               //   }
               //   return value;
               // });
-              
+              Get.to(NoteSearchDelegate());
               Get.snackbar('🗣️<Fuck you', 'Bro ');
               Get.forceAppUpdate();
             },

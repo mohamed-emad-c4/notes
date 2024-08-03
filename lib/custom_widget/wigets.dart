@@ -90,31 +90,7 @@ class CoustomBuildNote extends StatelessWidget {
                             },
                             icon: Icon(Icons.delete),
                           ),
-                          IconButton(
-                            icon: Icon(
-                              note.isFavorite
-                                  ? Icons.favorite
-                                  : Icons.favorite_border,
-                              color: note.isFavorite ? Colors.red : Colors.grey,
-                              size: 30,
-                            ),
-                            onPressed: () {
-                              NotesDatabase.instance.update(
-                                  note.copy(isFavorite: !note.isFavorite));
-                              Get.forceAppUpdate();
-                              if (note.isFavorite) {
-                                Get.snackbar(
-                                  'Success',
-                                  'Note removed Favorite 💩',
-                                );
-                              } else {
-                                Get.snackbar(
-                                  'Success',
-                                  'Note added Favorite ❤️',
-                                );
-                              }
-                            },
-                          ),
+                          CustomIconBottonChange(note: note),
                         ],
                       ),
                     ],
@@ -150,6 +126,44 @@ class CoustomBuildNote extends StatelessWidget {
             ),
           ),
         );
+      },
+    );
+  }
+}
+
+class CustomIconBottonChange extends StatelessWidget {
+  const CustomIconBottonChange({
+    super.key,
+    required this.note,
+  });
+
+  final NoteModel note;
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      icon: Icon(
+        note.isFavorite
+            ? Icons.favorite
+            : Icons.favorite_border,
+        color: note.isFavorite ? Colors.red : Colors.grey,
+        size: 30,
+      ),
+      onPressed: () {
+        NotesDatabase.instance.update(
+            note.copy(isFavorite: !note.isFavorite));
+        Get.forceAppUpdate();
+        if (note.isFavorite) {
+          Get.snackbar(
+            'Success',
+            'Note removed Favorite 💩',
+          );
+        } else {
+          Get.snackbar(
+            'Success',
+            'Note added Favorite ❤️',
+          );
+        }
       },
     );
   }

@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:get/get.dart';
 import 'package:notes/DB/database.dart';
+import 'package:notes/custom_widget/wigets.dart';
 import 'package:notes/models/note_model.dart';
 
 class NoteSearchDelegate extends StatefulWidget {
-  final Function(List<NoteModel>) onNotesFiltered;
-
-  const NoteSearchDelegate({Key? key, required this.onNotesFiltered})
-      : super(key: key);
+  const NoteSearchDelegate({
+    Key? key,
+  }) : super(key: key);
 
   @override
   _NoteSearchDelegateState createState() => _NoteSearchDelegateState();
@@ -36,7 +38,8 @@ class _NoteSearchDelegateState extends State<NoteSearchDelegate> {
       final titleLower = note.title.toLowerCase();
       final contentLower = note.content.toLowerCase();
       final queryLower = query.toLowerCase();
-      return titleLower.contains(queryLower) || contentLower.contains(queryLower);
+      return titleLower.contains(queryLower) ||
+          contentLower.contains(queryLower);
     }).toList();
 
     setState(() {
@@ -46,51 +49,54 @@ class _NoteSearchDelegateState extends State<NoteSearchDelegate> {
 
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
-      title: const Text('Search Notes'),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          TextField(
-            controller: _searchController,
-            decoration: const InputDecoration(
-              hintText: 'Enter search query',
-            ),
-            onChanged: (query) {
-              _filterNotes(query);
-            },
-          ),
-          const SizedBox(height: 10),
-          Expanded(
-            child: ListView.builder(
-              itemCount: _filteredNotes.length,
-              itemBuilder: (context, index) {
-                final note = _filteredNotes[index];
-                return ListTile(
-                  title: Text(note.title),
-                  subtitle: Text(note.content),
-                  trailing: Icon(
-                    note.isFavorite ? Icons.favorite : Icons.favorite_border,
-                    color: note.isFavorite ? Colors.red : Colors.grey,
+    return Scaffold(
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: [
+              SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+              TextField(
+                controller: _searchController,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(10.0)),
                   ),
-                  onTap: () {
-                    Navigator.of(context).pop();
-                    widget.onNotesFiltered(_filteredNotes);
+                  hintText: 'Enter search query',
+                ),
+                onChanged: (query) {
+                  _filterNotes(query);
+                },
+              ),
+              const SizedBox(height: 10),
+              Expanded(
+                child: ListView.builder(
+                  itemCount: _filteredNotes.length,
+                  itemBuilder: (context, index) {
+                    final note = _filteredNotes[index];
+                    return ListTile(
+                      title: Text(note.title),
+                      subtitle: Text(note.content),
+                      trailing: CustomIconBottonChange(note: note),
+                    );
                   },
-                );
-              },
-            ),
+                ),
+              ),
+              ElevatedButton(
+                  onPressed: () {
+                    Get.back();
+                  },
+                  child: const Text(
+                    'Back',
+                    style: TextStyle(fontSize: 20),
+                  )),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.02,
+              )
+            ],
           ),
-        ],
-      ),
-      actions: [
-        TextButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          child: const Text('Cancel'),
         ),
-      ],
+      ),
     );
   }
 }
