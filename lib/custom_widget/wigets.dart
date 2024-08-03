@@ -190,7 +190,7 @@ class _HandelBottomSheetState extends State<HandelBottomSheet> {
               }
 
               final note = NoteModel(
-                number: 1,
+              
                 title: _titleController.text,
                 content: _contentController.text,
                 isFavorite: _isFavorite, // استخدام حالة المفضلة هنا

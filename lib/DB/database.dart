@@ -27,10 +27,12 @@ class NotesDatabase {
     const idType = 'INTEGER PRIMARY KEY AUTOINCREMENT';
     const textType = 'TEXT NOT NULL';
     const boolType = 'BOOLEAN NOT NULL';
+    const integerType = 'INTEGER';
 
     await db.execute('''
     CREATE TABLE ${NoteFields.tableName} (
       ${NoteFields.id} $idType,
+      number INTEGER NOT NULL,
       ${NoteFields.title} $textType,
       ${NoteFields.content} $textType,
       ${NoteFields.isFavorite} $boolType,
@@ -91,13 +93,15 @@ class NotesDatabase {
       whereArgs: [id],
     );
   }
-Future<void> deleteAllNotes() async {
+
+  Future<void> deleteAllNotes() async {
     final db = await instance.database;
 
     await db.delete(
       NoteFields.tableName,
     );
   }
+
   Future<void> close() async {
     final db = await instance.database;
     await db.close();

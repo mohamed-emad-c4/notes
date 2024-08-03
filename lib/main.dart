@@ -4,7 +4,6 @@ import 'package:notes/controller/them_controller.dart';
 import 'package:notes/controller/view/Home.dart';
 
 void main() {
-  // تأكد من إضافة ThemeController كـ singleton قبل تشغيل التطبيق
   Get.put(ThemeController());
 
   runApp(const MyApp());
