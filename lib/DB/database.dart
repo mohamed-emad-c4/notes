@@ -27,7 +27,6 @@ class NotesDatabase {
     const idType = 'INTEGER PRIMARY KEY AUTOINCREMENT';
     const textType = 'TEXT NOT NULL';
     const boolType = 'BOOLEAN NOT NULL';
-    const integerType = 'INTEGER';
 
     await db.execute('''
     CREATE TABLE ${NoteFields.tableName} (
@@ -47,6 +46,17 @@ class NotesDatabase {
     final id = await db.insert(NoteFields.tableName, note.toJson());
     return note.copy(id: id);
   }
+Future<List<NoteModel>> searchDatabase(String searchTerm) async {
+  final db = await instance.database;
+  final searchPattern = '%$searchTerm%';
+  final results = await db.query(
+    NoteFields.tableName,
+    where: '${NoteFields.title} LIKE ? OR ${NoteFields.content} LIKE ?',
+    whereArgs: [searchPattern, searchPattern],
+  );
+
+  return results.map((json) => NoteModel.fromJson(json)).toList();
+}
 
   Future<NoteModel> readNote(int id) async {
     final db = await instance.database;

@@ -32,14 +32,22 @@ class Home extends StatelessWidget {
             icon: const Icon(Icons.search),
             tooltip: 'Search',
             onPressed: () async {
-              List<NoteModel> notes =
-                  await NotesDatabase.instance.readAllNotes().then((value) {
-                for (var element in value) {
-                  print("id:::::" + " ${element.id}");
-                }
-                return value;
-              });
-              Get.snackbar('🗣️<Fuck you', 'Bro ${notes.length} ');
+              // final results =
+              //     await NotesDatabase.instance.searchDatabase('mohamed');
+              // print(results);
+
+              // for (var row in results) {
+              //   print(row.title);
+              // }
+              // List<NoteModel> notes =
+              //     await NotesDatabase.instance.readAllNotes().then((value) {
+              //   for (var element in value) {
+              //     //  print("id:::::" + " ${element.id}");
+              //   }
+              //   return value;
+              // });
+              
+              Get.snackbar('🗣️<Fuck you', 'Bro ');
               Get.forceAppUpdate();
             },
           ),
