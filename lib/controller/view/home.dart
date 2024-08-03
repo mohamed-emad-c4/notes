@@ -1,7 +1,10 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:notes/DB/database.dart';
 import 'package:notes/controller/them_controller.dart';
+import 'package:notes/controller/view/favorite.dart';
 import 'package:notes/controller/view/search.dart';
 import 'package:notes/custom_widget/wigets.dart';
 import 'package:notes/models/note_model.dart';
@@ -58,10 +61,12 @@ class Home extends StatelessWidget {
               color: Colors.red,
             ),
             tooltip: 'Favorite notes',
-            onPressed: () async {
+            onPressed: () {
+              Get.off(const MyFavorite());
               Get.forceAppUpdate();
-              Get.snackbar('Success',
-                  'Favorite notes ${themeController.isDark.value ? '🌚' : "🌞"} ');
+
+              // Get.snackbar('Success',
+              //     'Favorite notes ${themeController.isDark.value ? '🌚' : "🌞"} ');
               // Implement search functionality here
             },
           ),
@@ -96,7 +101,9 @@ class Home extends StatelessWidget {
         child: Padding(
           padding:
               MediaQuery.of(context).viewInsets + const EdgeInsets.all(5.0),
-          child: GetNotes(),
+          child: GetNotes(
+            notes: NotesDatabase.instance.readAllNotes(),
+          ),
         ),
       ),
       floatingActionButton:

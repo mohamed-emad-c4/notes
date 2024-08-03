@@ -8,14 +8,15 @@ import 'package:notes/controller/them_controller.dart';
 import '../models/note_model.dart';
 
 class GetNotes extends StatelessWidget {
-  const GetNotes({
+   GetNotes({
     super.key,
+   required final  Future<List<NoteModel>> this.notes,
   });
-
+Future<List<NoteModel>> notes;
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<NoteModel>>(
-      future: NotesDatabase.instance.readAllNotes(),
+      future: notes,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: null);

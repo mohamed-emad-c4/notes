@@ -58,6 +58,17 @@ Future<List<NoteModel>> searchDatabase(String searchTerm) async {
   return results.map((json) => NoteModel.fromJson(json)).toList();
 }
 
+Future<List<NoteModel>> getAllFavoriteNotes() async {
+  final db = await instance.database;
+
+  final result = await db.query(
+    NoteFields.tableName,
+    where: '${NoteFields.isFavorite} = ?',
+    whereArgs: [1],
+  );
+  return result.map((json) => NoteModel.fromJson(json)).toList();
+}
+
   Future<NoteModel> readNote(int id) async {
     final db = await instance.database;
 
