@@ -14,8 +14,17 @@ class Home extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title:
-            const Text('Notes', style: TextStyle(fontWeight: FontWeight.bold)),
+        title: GestureDetector(
+          child: const Text(
+            'Notes',
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          onTap: () {
+            Get.snackbar('Hi',
+                'Bro ${themeController.isDark.value ? '🌚' : "🌞"} ');
+                  
+          },
+        ),
         actions: [
           IconButton(
             icon: const Icon(Icons.search),
@@ -30,6 +39,8 @@ class Home extends StatelessWidget {
             onPressed: () async {
               await NotesDatabase.instance.deleteAllNotes();
               Get.forceAppUpdate();
+              Get.snackbar('Success',
+                  'Delete all notes ${themeController.isDark.value ? '🌚' : "🌞"} ');
               // Implement search functionality here
             },
           ),
@@ -40,7 +51,11 @@ class Home extends StatelessWidget {
                     ? Icons.dark_mode
                     : Icons.light_mode,
               ),
-              onPressed: themeController.changeTheme,
+              onPressed: () {
+                themeController.changeTheme();
+                Get.snackbar('Success',
+                    'change theme ${themeController.isDark.value ? '🌚' : "🌞"} ');
+              },
             );
           }),
         ],
@@ -52,7 +67,8 @@ class Home extends StatelessWidget {
           child: GetNotes(),
         ),
       ),
-      floatingActionButton: CustomFloadActionBottom(themeController: themeController),
+      floatingActionButton:
+          CustomFloadActionBottom(themeController: themeController),
     );
   }
 }

@@ -88,6 +88,7 @@ class CoustomBuildNote extends StatelessWidget {
                           NotesDatabase.instance
                               .update(note.copy(isFavorite: !note.isFavorite));
                           Get.forceAppUpdate();
+                          Get.snackbar('Success', 'Note added Favorite ❤️',);
                         },
                       ),
                     ],
