@@ -20,10 +20,11 @@ class Home extends StatelessWidget {
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
           onTap: () {
-            Get.snackbar('Hi',
-                'Bro ${themeController.isDark.value ? '🌚' : "🌞"} ');
-                  
+            Get.snackbar(
+                'Hi', 'Bro ${themeController.isDark.value ? '🌚' : "🌞"} ',
+                duration: const Duration(milliseconds: 600));
           },
+          onDoubleTap: () => Get.snackbar('🗣️<Fuck you', ''),
         ),
         actions: [
           IconButton(

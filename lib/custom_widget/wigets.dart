@@ -4,6 +4,7 @@ import 'package:notes/DB/database.dart';
 import 'package:notes/controller/them_controller.dart';
 
 import '../models/note_model.dart';
+
 class GetNotes extends StatelessWidget {
   const GetNotes({
     super.key,
@@ -72,7 +73,6 @@ class CoustomBuildNote extends StatelessWidget {
                           style: const TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 19,
-                            color: Colors.black87,
                           ),
                         ),
                       ),
@@ -88,7 +88,17 @@ class CoustomBuildNote extends StatelessWidget {
                           NotesDatabase.instance
                               .update(note.copy(isFavorite: !note.isFavorite));
                           Get.forceAppUpdate();
-                          Get.snackbar('Success', 'Note added Favorite ❤️',);
+                          if (note.isFavorite) {
+                            Get.snackbar(
+                              'Success',
+                              'Note removed Favorite 💩',
+                            );
+                          } else {
+                            Get.snackbar(
+                              'Success',
+                              'Note added Favorite ❤️',
+                            );
+                          }
                         },
                       ),
                     ],
@@ -98,7 +108,6 @@ class CoustomBuildNote extends StatelessWidget {
                     note.content,
                     style: const TextStyle(
                       fontSize: 16,
-                      color: Colors.black54,
                     ),
                     maxLines: 3,
                     overflow: TextOverflow.ellipsis,
@@ -339,7 +348,7 @@ class _HandelBottomSheetState extends State<HandelBottomSheet> {
               if (_titleController.text.isEmpty ||
                   _contentController.text.isEmpty) {
                 Get.snackbar('Error', 'Title and content cannot be empty');
-                return ;
+                return;
               }
 
               final note = NoteModel(

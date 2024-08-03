@@ -19,6 +19,7 @@ class MyApp extends StatelessWidget {
 
     return Obx(() {
       return GetMaterialApp(
+        
         title: 'Notes',
         debugShowCheckedModeBanner: false,
         theme: themeController.theme,
