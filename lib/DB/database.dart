@@ -3,27 +3,27 @@ import 'package:path/path.dart';
 import '../models/note_model.dart';
 
 class NotesDatabase {
-  static final NotesDatabase instance = NotesDatabase._init();
+  static final NotesDatabase instance = NotesDatabase.init();
 
   static Database? _database;
 
-  NotesDatabase._init();
+  NotesDatabase.init();
 
   Future<Database> get database async {
     if (_database != null) return _database!;
 
-    _database = await _initDB('notes.db');
+    _database = await initDB('notes.db');
     return _database!;
   }
 
-  Future<Database> _initDB(String filePath) async {
+  Future<Database> initDB(String filePath) async {
     final dbPath = await getDatabasesPath();
     final path = join(dbPath, filePath);
 
-    return await openDatabase(path, version: 1, onCreate: _createDB);
+    return await openDatabase(path, version: 1, onCreate: createDB);
   }
 
-  Future _createDB(Database db, int version) async {
+  Future createDB(Database db, int version) async {
     const idType = 'INTEGER PRIMARY KEY AUTOINCREMENT';
     const textType = 'TEXT NOT NULL';
     const boolType = 'BOOLEAN NOT NULL';
@@ -97,14 +97,18 @@ class NotesDatabase {
   Future<void> deleteAllNotes() async {
     final db = await instance.database;
 
-    await db.delete(
-      NoteFields.tableName,
-    );
+    await db.execute('DROP TABLE IF EXISTS ${NoteFields.tableName}');
+    await createDB(db, 1);
   }
 
   Future<void> close() async {
     final db = await instance.database;
     await db.close();
     _database = null; // نضمن عدم استخدام قاعدة بيانات مغلقة
+  }
+
+  Future<void> vacuumDatabase() async {
+    final db = await instance.database;
+    await db.execute('VACUUM');
   }
 }

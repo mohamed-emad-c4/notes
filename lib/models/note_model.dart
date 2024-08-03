@@ -6,7 +6,7 @@ class NoteModel {
   final String title;
   final String content;
   final bool isFavorite;
-  final DateTime createdTime;
+  final String createdTime;
 
   NoteModel({
     this.id,
@@ -23,7 +23,7 @@ class NoteModel {
         NoteFields.title: title,
         NoteFields.content: content,
         NoteFields.isFavorite: isFavorite ? 1 : 0,
-        NoteFields.createdTime: createdTime.toIso8601String(),
+        NoteFields.createdTime: createdTime,
       };
 
   static NoteModel fromJson(Map<String, dynamic> json) => NoteModel(
@@ -32,7 +32,7 @@ class NoteModel {
         title: json[NoteFields.title] as String,
         content: json[NoteFields.content] as String,
         isFavorite: json[NoteFields.isFavorite] == 1,
-        createdTime: DateTime.parse(json[NoteFields.createdTime] as String),
+        createdTime:(json[NoteFields.createdTime] as String),
       );
 
   NoteModel copy({
@@ -41,7 +41,7 @@ class NoteModel {
     String? title,
     String? content,
     bool? isFavorite,
-    DateTime? createdTime,
+    String? createdTime,
   }) =>
       NoteModel(
         id: id ?? this.id,

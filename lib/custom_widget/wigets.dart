@@ -167,81 +167,6 @@ class CustomFloadActionBottom extends StatelessWidget {
   }
 }
 
-// class Note extends StatelessWidget {
-//   const Note({
-//     super.key,
-//   });
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return SizedBox(
-//       width: double.infinity,
-//       height: MediaQuery.of(context).size.height * 0.29,
-//       child: Card(
-//         elevation: 100,
-//         shadowColor: Colors.amber,
-//         color: Colors.amber,
-//         child: Align(
-//           alignment: Alignment.centerLeft,
-//           child: Padding(
-//             padding: const EdgeInsets.all(8.0),
-//             child: Column(
-//               crossAxisAlignment: CrossAxisAlignment.start,
-//               children: [
-//                 Row(
-//                   children: [
-//                     const Text(
-//                       'Note Title',
-//                       maxLines: 1,
-//                       style: TextStyle(
-//                         color: Colors.black,
-//                         fontWeight: FontWeight.bold,
-//                         overflow: TextOverflow.ellipsis,
-//                         fontSize: 18,
-//                       ),
-//                     ),
-//                     const Spacer(),
-//                     CustomIconBottom(
-//                         onpressed1: () {}, icon: Icons.favorite_outline),
-//                     CustomIconBottom(onpressed1: () {}, icon: Icons.edit),
-//                     CustomIconBottom(onpressed1: () {}, icon: Icons.delete),
-//                   ],
-//                 ),
-//                 const Text(
-//                   '''Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.''',
-//                   maxLines: 7,
-//                   style: TextStyle(
-//                     color: Color.fromARGB(255, 69, 69, 69),
-//                     fontWeight: FontWeight.bold,
-//                     overflow: TextOverflow.ellipsis,
-//                     fontSize: 12,
-//                   ),
-//                 ),
-//                 const Row(
-//                   children: [
-//                     Spacer(),
-//                     Text(
-//                       '15/4/2024 10:00 AM',
-//                       maxLines: 1,
-//                       style: TextStyle(
-//                         color: Colors.grey,
-//                         fontWeight: FontWeight.bold,
-//                         overflow: TextOverflow.ellipsis,
-//                         fontSize: 12,
-//                       ),
-//                     ),
-//                     SizedBox(width: 5),
-//                   ],
-//                 )
-//               ],
-//             ),
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }
-
 class CustomIconBottom extends StatelessWidget {
   CustomIconBottom({
     this.icon = Icons.favorite,
@@ -347,7 +272,7 @@ class _HandelBottomSheetState extends State<HandelBottomSheet> {
             onPressed: () async {
               if (_titleController.text.isEmpty ||
                   _contentController.text.isEmpty) {
-                Get.snackbar('Error', 'Title and content cannot be empty');
+                Get.snackbar('Error', 'Title and content cannot be empty 🚫');
                 return;
               }
 
@@ -356,12 +281,13 @@ class _HandelBottomSheetState extends State<HandelBottomSheet> {
                 title: _titleController.text,
                 content: _contentController.text,
                 isFavorite: _isFavorite, // استخدام حالة المفضلة هنا
-                createdTime: DateTime.now(),
+                createdTime: formatDateTimeCustom(DateTime.now()),
               );
 
               await NotesDatabase.instance.create(note);
               Get.back(); // إغلاق الـ Bottom Sheet بعد حفظ الملاحظة
-              Get.snackbar('Success', 'Note added successfully');
+              Get.snackbar('Success❤️', 'Note added successfully 📝');
+              NotesDatabase.instance.close();
             },
             child: const Text('Add Note'),
           ),
@@ -413,4 +339,17 @@ class CoutomAppBar extends StatelessWidget {
       ),
     );
   }
+}
+
+String formatDateTimeCustom(DateTime dateTime) {
+  int year = dateTime.year;
+  int month = dateTime.month;
+  int day = dateTime.day;
+  int hour = dateTime.hour;
+  int minute = dateTime.minute;
+  int second = dateTime.second;
+  String period = hour >= 12 ? 'PM' : 'AM';
+  hour = hour % 12;
+  hour = hour == 0 ? 12 : hour;
+  return '$year/$month/$day $hour:$minute:$second $period';
 }

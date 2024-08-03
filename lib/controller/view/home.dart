@@ -4,6 +4,7 @@ import 'package:notes/DB/database.dart';
 import 'package:notes/controller/them_controller.dart';
 import 'package:notes/custom_widget/wigets.dart';
 import 'package:notes/models/note_model.dart';
+import 'package:sqflite/sqflite.dart';
 
 class Home extends StatelessWidget {
   const Home({super.key});
@@ -30,8 +31,16 @@ class Home extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.search),
             tooltip: 'Search',
-            onPressed: () {
-              // Implement search functionality here
+            onPressed: () async {
+              List<NoteModel> notes =
+                  await NotesDatabase.instance.readAllNotes().then((value) {
+                for (var element in value) {
+                  print("id:::::" + " ${element.id}");
+                }
+                return value;
+              });
+              Get.snackbar('🗣️<Fuck you', 'Bro ${notes.length} ');
+              Get.forceAppUpdate();
             },
           ),
           IconButton(
@@ -39,6 +48,7 @@ class Home extends StatelessWidget {
             tooltip: 'Delete all notes',
             onPressed: () async {
               await NotesDatabase.instance.deleteAllNotes();
+              await NotesDatabase.instance.vacuumDatabase();
               Get.forceAppUpdate();
               Get.snackbar('Success',
                   'Delete all notes ${themeController.isDark.value ? '🌚' : "🌞"} ');

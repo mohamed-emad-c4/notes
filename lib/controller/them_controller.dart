@@ -7,12 +7,13 @@ class ThemeController extends GetxController {
   ThemeData get theme => isDark.value
       ? ThemeData(
           brightness: Brightness.dark,
-          scaffoldBackgroundColor: Colors.black,
-          colorScheme: const ColorScheme.dark(),
+          colorScheme: ColorScheme.dark(),
         )
       : ThemeData(
           brightness: Brightness.light,
+          colorScheme: ColorScheme.light(),
         );
+  // ThemeData get theme => isDark.value ? ThemeData.dark() : ThemeData.light(
 
   void changeTheme() {
     isDark.value = !isDark.value;
