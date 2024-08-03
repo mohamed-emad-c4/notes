@@ -18,7 +18,7 @@ class GetNotes extends StatelessWidget {
       future: NotesDatabase.instance.readAllNotes(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
+          return const Center(child: null);
         } else if (snapshot.hasError) {
           return Center(child: Text('Error: ${snapshot.error}'));
         } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
@@ -68,13 +68,14 @@ class CoustomBuildNote extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.6,
+                        width: MediaQuery.of(context).size.width * 0.67,
                         child: Text(
                           note.title,
+                          maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                           style: const TextStyle(
                             fontWeight: FontWeight.bold,
-                            fontSize: 19,
+                            fontSize: 18,
                           ),
                         ),
                       ),
@@ -121,10 +122,8 @@ class CoustomBuildNote extends StatelessWidget {
                   const SizedBox(height: 8),
                   Text(
                     note.content,
-                    style: const TextStyle(
-                      fontSize: 16,
-                    ),
-                    maxLines: 3,
+                    style: const TextStyle(fontSize: 12, color: Colors.grey),
+                    maxLines: 5,
                     overflow: TextOverflow.ellipsis,
                   ),
                   const SizedBox(height: 12),
