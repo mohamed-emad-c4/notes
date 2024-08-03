@@ -5,7 +5,7 @@ class NoteModel {
   final int number; // إضافة حقل number
   final String title;
   final String content;
-  final bool isFavorite;
+  bool isFavorite;
   final String createdTime;
 
   NoteModel({
@@ -32,7 +32,7 @@ class NoteModel {
         title: json[NoteFields.title] as String,
         content: json[NoteFields.content] as String,
         isFavorite: json[NoteFields.isFavorite] == 1,
-        createdTime:(json[NoteFields.createdTime] as String),
+        createdTime: (json[NoteFields.createdTime] as String),
       );
 
   NoteModel copy({

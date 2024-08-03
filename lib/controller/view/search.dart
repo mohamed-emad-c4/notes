@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:notes/DB/database.dart';
+import 'package:notes/controller/view/preview.dart';
 import 'package:notes/models/note_model.dart';
-import '../../custom_widget/wigets.dart'; // Adjusted import name
 
 class NoteSearchDelegate extends StatefulWidget {
   const NoteSearchDelegate({Key? key}) : super(key: key);
@@ -51,8 +51,7 @@ class _NoteSearchDelegateState extends State<NoteSearchDelegate> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Search Notes'),
-        backgroundColor: Theme.of(context).primaryColor,
-        elevation: 2,
+        elevation: 1,
         actions: [
           IconButton(
             icon: const Icon(Icons.close),
@@ -62,74 +61,61 @@ class _NoteSearchDelegateState extends State<NoteSearchDelegate> {
       ),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
           child: Column(
             children: [
-              // Search Field
-              Container(
-                decoration: BoxDecoration(
-                  color: Colors.grey[100],
-                  borderRadius: BorderRadius.circular(12.0),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.1),
-                      blurRadius: 8.0,
-                      offset: const Offset(0, 4),
-                    ),
-                  ],
-                ),
-                child: TextField(
-                  controller: _searchController,
-                  decoration: InputDecoration(
-                    prefixIcon: const Icon(Icons.search, color: Colors.grey),
-                    suffixIcon: _searchController.text.isNotEmpty
-                        ? IconButton(
-                            icon: const Icon(Icons.clear, color: Colors.grey),
-                            onPressed: () {
-                              _searchController.clear();
-                              _filterNotes('');
-                            },
-                          )
-                        : null,
-                    border: InputBorder.none,
-                    hintText: 'Search notes...',
-                    contentPadding: const EdgeInsets.symmetric(vertical: 14.0),
+              TextField(
+                controller: _searchController,
+                decoration: InputDecoration(
+                  prefixIcon: const Icon(Icons.search, color: Colors.grey),
+                  suffixIcon: _searchController.text.isNotEmpty
+                      ? IconButton(
+                          icon: const Icon(Icons.clear, color: Colors.grey),
+                          onPressed: () {
+                            _searchController.clear();
+                            _filterNotes('');
+                          },
+                        )
+                      : null,
+                  filled: true,
+                  fillColor: Colors.grey[200],
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12.0),
+                    borderSide: BorderSide.none,
                   ),
-                  onChanged: _filterNotes,
+                  hintText: 'Search notes...',
                 ),
+                onChanged: _filterNotes,
               ),
               const SizedBox(height: 16),
-              // Notes List
               Expanded(
                 child: _filteredNotes.isEmpty
                     ? const Center(
                         child: Text('No notes found',
-                            style: TextStyle(
-                                color: Colors.grey,
-                                fontSize: 18,
-                                fontWeight: FontWeight.w500)))
+                            style: TextStyle(color: Colors.grey, fontSize: 16)))
                     : ListView.builder(
                         itemCount: _filteredNotes.length,
                         itemBuilder: (context, index) {
                           final note = _filteredNotes[index];
                           return Card(
                             margin: const EdgeInsets.symmetric(vertical: 8.0),
-                            elevation: 4,
+                            elevation: 5,
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(16.0),
+                              borderRadius: BorderRadius.circular(12.0),
                             ),
                             child: ListTile(
                               contentPadding: const EdgeInsets.all(16.0),
                               title: Text(note.title,
                                   style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 18)),
+                                      fontWeight: FontWeight.bold)),
                               subtitle: Text(note.content,
-                                  maxLines: 3, overflow: TextOverflow.ellipsis),
-                              trailing: CustomIconButtonChange(note: note),
-                              onTap: () {
-                                // Handle note tap if needed
-                              },
+                                  maxLines: 2, overflow: TextOverflow.ellipsis),
+                              trailing: IconButton(
+                                icon: const Icon(Icons.arrow_forward),
+                                onPressed: () {
+                                  Get.to(() => NotePreviewPage(note: note));
+                                },
+                              ),
                             ),
                           );
                         },

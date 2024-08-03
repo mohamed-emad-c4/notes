@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:notes/DB/database.dart';
 import 'package:notes/controller/them_controller.dart';
 import 'package:notes/controller/view/edit_note.dart';
+import '../controller/view/preview.dart';
 import '../models/note_model.dart';
 
 class GetNotes extends StatelessWidget {
@@ -70,13 +71,18 @@ class CustomBuildNote extends StatelessWidget {
                     children: [
                       SizedBox(
                         width: MediaQuery.of(context).size.width * 0.67,
-                        child: Text(
-                          note.title,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18,
+                        child: GestureDetector(
+                          onTap: () {
+                            Get.to(() => NotePreviewPage(note: note));
+                          },
+                          child: Text(
+                            note.title,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
+                            ),
                           ),
                         ),
                       ),
@@ -96,11 +102,16 @@ class CustomBuildNote extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(height: 8),
-                  Text(
-                    note.content,
-                    style: const TextStyle(fontSize: 12, color: Colors.grey),
-                    maxLines: 5,
-                    overflow: TextOverflow.ellipsis,
+                  GestureDetector(
+                    onTap: () {
+                      Get.to(() => NotePreviewPage(note: note));
+                    },
+                    child: Text(
+                      note.content,
+                      style: const TextStyle(fontSize: 12, color: Colors.grey),
+                      maxLines: 5,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
                   const SizedBox(height: 12),
                   Row(
@@ -117,8 +128,8 @@ class CustomBuildNote extends StatelessWidget {
                         icon: const Icon(Icons.edit),
                         onPressed: () async {
                           try {
-                            NoteModel noteEdit = await NotesDatabase.instance
-                                .readNote(note.id!);
+                            NoteModel noteEdit =
+                                await NotesDatabase.instance.readNote(note.id!);
                             Get.to(() => EditNote(note: noteEdit));
                           } catch (error) {
                             print('Error retrieving note: $error');
@@ -158,7 +169,9 @@ class CustomIconButtonChange extends StatelessWidget {
         Get.forceAppUpdate();
         Get.snackbar(
           'Success',
-          note.isFavorite ? 'Note removed from Favorites 💩' : 'Note added to Favorites ❤️',
+          note.isFavorite
+              ? 'Note removed from Favorites 💩'
+              : 'Note added to Favorites ❤️',
         );
       },
     );
