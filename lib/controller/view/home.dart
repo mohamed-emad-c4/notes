@@ -53,6 +53,19 @@ class Home extends StatelessWidget {
             },
           ),
           IconButton(
+            icon: const Icon(
+              Icons.favorite,
+              color: Colors.red,
+            ),
+            tooltip: 'Favorite notes',
+            onPressed: () async {
+              Get.forceAppUpdate();
+              Get.snackbar('Success',
+                  'Favorite notes ${themeController.isDark.value ? '🌚' : "🌞"} ');
+              // Implement search functionality here
+            },
+          ),
+          IconButton(
             icon: const Icon(Icons.delete),
             tooltip: 'Delete all notes',
             onPressed: () async {
