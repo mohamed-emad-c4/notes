@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:notes/DB/database.dart';
@@ -58,7 +60,7 @@ class CoustomBuildNote extends StatelessWidget {
               // Navigate to detail page or edit note
             },
             child: Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(5.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -66,7 +68,7 @@ class CoustomBuildNote extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.75,
+                        width: MediaQuery.of(context).size.width * 0.6,
                         child: Text(
                           note.title,
                           overflow: TextOverflow.ellipsis,
@@ -76,30 +78,43 @@ class CoustomBuildNote extends StatelessWidget {
                           ),
                         ),
                       ),
-                      IconButton(
-                        icon: Icon(
-                          note.isFavorite
-                              ? Icons.favorite
-                              : Icons.favorite_border,
-                          color: note.isFavorite ? Colors.red : Colors.grey,
-                          size: 30,
-                        ),
-                        onPressed: () {
-                          NotesDatabase.instance
-                              .update(note.copy(isFavorite: !note.isFavorite));
-                          Get.forceAppUpdate();
-                          if (note.isFavorite) {
-                            Get.snackbar(
-                              'Success',
-                              'Note removed Favorite 💩',
-                            );
-                          } else {
-                            Get.snackbar(
-                              'Success',
-                              'Note added Favorite ❤️',
-                            );
-                          }
-                        },
+                      Row(
+                        children: [
+                          IconButton(
+                            onPressed: () {
+                              log(index.toString());
+                              NotesDatabase.instance
+                                  .delete(note.id!)
+                                  .then((value) => Get.forceAppUpdate());
+                            },
+                            icon: Icon(Icons.delete),
+                          ),
+                          IconButton(
+                            icon: Icon(
+                              note.isFavorite
+                                  ? Icons.favorite
+                                  : Icons.favorite_border,
+                              color: note.isFavorite ? Colors.red : Colors.grey,
+                              size: 30,
+                            ),
+                            onPressed: () {
+                              NotesDatabase.instance.update(
+                                  note.copy(isFavorite: !note.isFavorite));
+                              Get.forceAppUpdate();
+                              if (note.isFavorite) {
+                                Get.snackbar(
+                                  'Success',
+                                  'Note removed Favorite 💩',
+                                );
+                              } else {
+                                Get.snackbar(
+                                  'Success',
+                                  'Note added Favorite ❤️',
+                                );
+                              }
+                            },
+                          ),
+                        ],
                       ),
                     ],
                   ),
