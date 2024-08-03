@@ -4,8 +4,6 @@ import 'package:notes/DB/database.dart';
 import 'package:notes/custom_widget/wigets.dart';
 import 'package:notes/models/note_model.dart';
 
-import '../NotesController.dart';
-
 class EditNote extends StatelessWidget {
   EditNote({super.key, required this.note}) {
     titleController.text = note.title;
@@ -20,12 +18,9 @@ class EditNote extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final NotesController notesController =
-        Get.put(NotesController()); // الحصول على وحدة التحكم
-
     return Scaffold(
       appBar: AppBar(
-        title: Text('Edit Note'),
+        title: const Text('Edit Note'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -46,26 +41,26 @@ class EditNote extends StatelessWidget {
                         _isFavorite = !_isFavorite;
                       },
                     ),
-                    border: OutlineInputBorder(
+                    border: const OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(16)),
                     ),
                     labelText: 'Title',
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 TextField(
                   controller: contentController,
                   maxLines: 20,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(16)),
                     ),
                     labelText: 'Content',
                   ),
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: () async {
                     if (titleController.text.isEmpty ||
@@ -82,14 +77,13 @@ class EditNote extends StatelessWidget {
                       createdTime: formatDateTimeCustom(DateTime.now()),
                     );
 
-                    // استخدام وحدة التحكم لتحديث الملاحظة
-                    notesController.updateNote(updatedNote);
+                    await NotesDatabase.instance.update(updatedNote);
 
                     Get.snackbar('Success❤️', 'Note updated successfully 📝');
 
                     Navigator.pop(context);
                   },
-                  child: Text(
+                  child: const Text(
                     'Save',
                     style: TextStyle(fontSize: 20),
                   ),

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:notes/DB/database.dart';
@@ -7,8 +5,6 @@ import 'package:notes/controller/them_controller.dart';
 import 'package:notes/controller/view/favorite.dart';
 import 'package:notes/controller/view/search.dart';
 import 'package:notes/custom_widget/wigets.dart';
-import 'package:notes/models/note_model.dart';
-import 'package:sqflite/sqflite.dart';
 
 class Home extends StatelessWidget {
   const Home({super.key});
@@ -26,8 +22,10 @@ class Home extends StatelessWidget {
           ),
           onTap: () {
             Get.snackbar(
-                'Hi', 'Bro ${themeController.isDark.value ? '🌚' : "🌞"} ',
-                duration: const Duration(milliseconds: 600));
+              'Hi',
+              'Bro ${themeController.isDark.value ? '🌚' : "🌞"}',
+              duration: const Duration(milliseconds: 600),
+            );
           },
           onDoubleTap: () => Get.snackbar('🗣️<Fuck you', ''),
         ),
@@ -35,24 +33,8 @@ class Home extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.search),
             tooltip: 'Search',
-            onPressed: () async {
-              // final results =
-              //     await NotesDatabase.instance.searchDatabase('mohamed');
-              // print(results);
-
-              // for (var row in results) {
-              //   print(row.title);
-              // }
-              // List<NoteModel> notes =
-              //     await NotesDatabase.instance.readAllNotes().then((value) {
-              //   for (var element in value) {
-              //     //  print("id:::::" + " ${element.id}");
-              //   }
-              //   return value;
-              // });
+            onPressed: () {
               Get.to(NoteSearchDelegate());
-              Get.snackbar('🗣️<Fuck you', 'Bro ');
-              Get.forceAppUpdate();
             },
           ),
           IconButton(
@@ -63,11 +45,6 @@ class Home extends StatelessWidget {
             tooltip: 'Favorite notes',
             onPressed: () {
               Get.off(const MyFavorite());
-              Get.forceAppUpdate();
-
-              // Get.snackbar('Success',
-              //     'Favorite notes ${themeController.isDark.value ? '🌚' : "🌞"} ');
-              // Implement search functionality here
             },
           ),
           IconButton(
@@ -75,10 +52,8 @@ class Home extends StatelessWidget {
             tooltip: 'Delete all notes',
             onPressed: () async {
               await NotesDatabase.instance.deleteAllNotes();
-              Get.forceAppUpdate();
               Get.snackbar('Success',
-                  'Delete all notes ${themeController.isDark.value ? '🌚' : "🌞"} ');
-              // Implement search functionality here
+                  'Delete all notes ${themeController.isDark.value ? '🌚' : "🌞"}');
             },
           ),
           Obx(() {
@@ -91,7 +66,7 @@ class Home extends StatelessWidget {
               onPressed: () {
                 themeController.changeTheme();
                 Get.snackbar('Success',
-                    'change theme ${themeController.isDark.value ? '🌚' : "🌞"} ');
+                    'Change theme ${themeController.isDark.value ? '🌚' : "🌞"}');
               },
             );
           }),
@@ -107,7 +82,7 @@ class Home extends StatelessWidget {
         ),
       ),
       floatingActionButton:
-          CustomFloadActionBottom(themeController: themeController),
+          CustomFloatActionButton(themeController: themeController),
     );
   }
 }

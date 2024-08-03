@@ -2,13 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:notes/controller/them_controller.dart';
 import 'package:notes/controller/view/Home.dart';
-
-import 'controller/view/edit_note.dart';
 import 'controller/view/favorite.dart';
 
 void main() {
   Get.put(ThemeController());
-
   runApp(const MyApp());
 }
 
@@ -17,13 +14,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // الحصول على المثيل الواحد من ThemeController
     final ThemeController themeController = Get.find();
 
     return Obx(() {
       return GetMaterialApp(
         getPages: [
-          GetPage(name: '/', page: () => Home()),
+          GetPage(name: '/', page: () => const Home()),
           GetPage(name: '/favorite', page: () => const MyFavorite()),
         ],
         title: 'Notes',
