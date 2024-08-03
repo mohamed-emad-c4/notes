@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:notes/controller/them_controller.dart';
 import 'package:notes/controller/view/Home.dart';
 
+import 'controller/view/edit_note.dart';
 import 'controller/view/favorite.dart';
 
 void main() {

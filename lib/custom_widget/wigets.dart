@@ -4,15 +4,16 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:notes/DB/database.dart';
 import 'package:notes/controller/them_controller.dart';
+import 'package:notes/controller/view/edit_note.dart';
 
 import '../models/note_model.dart';
 
 class GetNotes extends StatelessWidget {
-   GetNotes({
+  GetNotes({
     super.key,
-   required final  Future<List<NoteModel>> this.notes,
+    required Future<List<NoteModel>> this.notes,
   });
-Future<List<NoteModel>> notes;
+  Future<List<NoteModel>> notes;
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<NoteModel>>(
@@ -84,7 +85,6 @@ class CoustomBuildNote extends StatelessWidget {
                         children: [
                           IconButton(
                             onPressed: () {
-                              log(index.toString());
                               NotesDatabase.instance
                                   .delete(note.id!)
                                   .then((value) => Get.forceAppUpdate());
@@ -116,8 +116,18 @@ class CoustomBuildNote extends StatelessWidget {
                       ),
                       IconButton(
                         icon: const Icon(Icons.edit),
-                        onPressed: () {
-                          // Edit note
+                        onPressed: () async {
+                          try {
+                            // قراءة الملاحظة بناءً على معرّفها
+                            NoteModel noteEdit =
+                                await NotesDatabase.instance.readNote(note.id!);
+
+                            // الانتقال إلى الصفحة باستخدام Get.to مع تمرير الملاحظة كمُعامل
+                            Get.to(() => EditNote(note: noteEdit));
+                          } catch (error) {
+                            // التعامل مع أي خطأ قد يحدث أثناء عملية استرجاع الملاحظة
+                            print('Error retrieving note: $error');
+                          }
                         },
                       ),
                     ],
@@ -144,15 +154,12 @@ class CustomIconBottonChange extends StatelessWidget {
   Widget build(BuildContext context) {
     return IconButton(
       icon: Icon(
-        note.isFavorite
-            ? Icons.favorite
-            : Icons.favorite_border,
+        note.isFavorite ? Icons.favorite : Icons.favorite_border,
         color: note.isFavorite ? Colors.red : Colors.grey,
         size: 30,
       ),
       onPressed: () {
-        NotesDatabase.instance.update(
-            note.copy(isFavorite: !note.isFavorite));
+        NotesDatabase.instance.update(note.copy(isFavorite: !note.isFavorite));
         Get.forceAppUpdate();
         if (note.isFavorite) {
           Get.snackbar(
